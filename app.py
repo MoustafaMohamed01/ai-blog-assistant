@@ -1,6 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 from api_key import GEMINI_API_KEY
+from st_copy_to_clipboard import st_copy_to_clipboard
 
 genai.configure(api_key=GEMINI_API_KEY)
 
@@ -32,14 +33,35 @@ with st.sidebar:
 
     blog_title = st.text_input('Blog Title')
     keywords = st.text_input('Keywords')
+    num_words = st.slider('Number of words', min_value=200, max_value=2500, step=250)  
 
-    num_words = st.slider('Number of words', min_value=200, max_value=2500, step=250)
-
-    prompt_parts = [f'Generate a comprehensive, engaging blog post relevant to the given title: "{blog_title}" and keywords: "{keywords}". Make sure to incorporate these keywords in the blog post. The blog should be approximately {num_words} words.']
+    prompt_parts = [f"""
+    Generate a well-structured and engaging blog post with the title: "{blog_title}". 
+    Incorporate the following keywords naturally throughout the content: "{keywords}". 
+    The blog post should aim for a professional yet accessible tone, suitable for a broad audience interested in this topic. 
+    Organize the blog post with clear headings and subheadings where appropriate to enhance readability. 
+    The approximate word count should be {num_words} words. 
+    Please ensure the introduction is captivating, the body paragraphs are informative and well-supported, and the conclusion provides a concise summary or call to action (if relevant to the topic).
+    """]
     response = model.generate_content(prompt_parts)
 
     submit_button = st.button('Generate Blog')
 
 
 if submit_button:
-    st.write(response.text)
+    with st.spinner('Generating blog post...'):
+        try:
+            response = model.generate_content(prompt_parts)
+            generated_text = response.text
+            st.subheader("Generated Blog Post:")
+            st.markdown(generated_text)
+
+            if generated_text:
+                st.download_button(
+                    label="Download as Markdown",
+                    data=generated_text,
+                    file_name=f"{blog_title.replace(' ', '_')}.md",
+                    mime="text/markdown",
+                )
+        except Exception as e:
+            st.error(f"An error occurred during blog post generation: {e}")
