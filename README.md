@@ -1,6 +1,8 @@
 # 📝 AI Blog Assistant
 
-**AI Blog Assistant** is a Streamlit-powered web application that leverages Google's **Gemini 2.0 Flash** LLM to help you generate high-quality blog posts with ease. Simply enter your blog title, keywords, and desired word count — and let AI craft a compelling, well-structured article for you.
+**AI Blog Assistant** is a sleek, Streamlit-powered application that enables effortless blog generation using **Google's Gemini 2.0 Flash LLM**. Whether you're a content marketer, technical writer, or blogger, this tool helps you craft high-quality, keyword-rich blog posts in seconds — just input a title, a few keywords, and your desired word count.
+
+Additionally, this project includes an **experimental LLaMA-powered blog writer** using Meta’s LLaMA 3.2, showcasing multi-model support and flexibility.
 
 ![Blog AI Assistant Screenshot](images/Streamlit_app.jpg)
 
@@ -8,12 +10,13 @@
 
 ## Features
 
-* Generate blog content based on a given title, keywords, and word count
-* Produces professional, engaging, and readable articles
-* Uses Google's **Gemini 2.0 Flash** model for fast and intelligent content generation
-* Download blog posts as Markdown files
-* Easy-to-use sidebar input form
-* Streamlit-powered interface
+* Gemini 2.0 Flash: fast, reliable blog generation with SEO keyword focus
+* LLaMA 3.2 Model (Experimental): alternative blog generator with open LLMs
+* Generates well-structured articles with headings and keyword integration
+* Interactive Streamlit UI
+* Download results in Markdown
+* API key-based integration
+* Modular and easy to extend
 
 ---
 
@@ -22,17 +25,18 @@
 ```
 ai-blog-assistant/
 │
-├── api_key.py             # Contains your Google Gemini API key
-├── app.py                 # Main Streamlit app
-├── requirements.txt       # Python dependencies
+├── api_key.py               # Contains your Gemini API key
+├── gemini_app.py                   # Main app using Gemini LLM
+├── llama_app.py             # Alternative blog generator using Meta's LLaMA
+├── requirements.txt         # Python dependencies
 ├── images/
-│    └── Streamlit_app.jpg
-└── README.md              # Project documentation
+│   └── Streamlit_app.jpg    # UI screenshot
+└── README.md                # Project documentation
 ```
 
 ---
 
-## Setup
+## Getting Started
 
 ### 1. Clone the Repository
 
@@ -46,54 +50,71 @@ cd ai-blog-assistant
 ```bash
 pip install -r requirements.txt
 ```
-You can install them manually with:
+
+Or manually:
 
 ```bash
-pip install streamlit google-generativeai st-copy-to-clipboard
+pip install streamlit google-generativeai
 ```
+
+> If using the LLaMA script (`llama_app.py`), make sure you also install:
+>
+> ```bash
+> pip install streamlit requests json
+> ```
 
 ### 3. Set Up API Key
 
-Create a file named `api_key.py` in the project root:
+For Gemini, create a file `api_key.py`:
 
 ```python
 GEMINI_API_KEY = "your_google_gemini_api_key"
 ```
 
-Replace `"your_google_gemini_api_key"` with your actual key from [Google AI Studio](https://makersuite.google.com/).
-
 ---
 
-## Run the App
+## Run the Apps
+
+### Run Gemini-Powered Blog Assistant
 
 ```bash
-streamlit run app.py
+streamlit run gemini_app.py
 ```
 
-The app will open in your default browser at `http://localhost:8501`.
+### Run LLaMA-Based Blog Generator
+
+```bash
+streamlit run llama_app.py
+```
+
+> Make sure your LLaMA model is downloaded and available locally or configured via `transformers`.
 
 ---
 
-## Example Usage
+## Example Use Case
 
-1. Enter your blog title (e.g., *"The Future of AI in Education"*)
-2. Add relevant keywords (e.g., *"AI, education, technology, online learning"*)
-3. Choose a word count
-4. Click **Generate Blog**
-5. Copy or download your generated content!
+1. **Input Blog Title** — e.g., *"The Role of AI in Climate Solutions"*
+2. **Add Keywords** — e.g., *"AI, climate change, sustainability"*
+3. **Choose Word Count** — from 200 to 2500
+4. **Click Generate Blog**
+5. **Copy or Download** the generated Markdown post
 
 ---
 
-## Dependencies
+## LLaMA Integration
+
+The `llama_app.py` file showcases how Meta’s **LLaMA 3.2** can be used to generate blog-style content using open-source models via `transformers`.
+
+You can modify the generation prompt, model size, or tokenizer to customize behavior. Great for offline and open-weight deployments!
+
+---
+
+## Requirements
 
 * `streamlit`
 * `google-generativeai`
-
-You can install them manually with:
-
-```bash
-pip install streamlit google-generativeai st-copy-to-clipboard
-```
+* `requests`
+* `json`
 
 ---
 
